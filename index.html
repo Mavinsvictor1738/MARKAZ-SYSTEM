@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#183c30">
+<title>MARKAZ MADRASA | Management Information System</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+    --primary: #183c30;
+    --primary-light: #245844;
+    --accent: #d5a83b;
+    --background: #f4f7f5;
+    --sidebar-width: 260px;
+    --text: #25352d;
+    --muted: #7b8b82;
+    --border: #e5ece7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--primary);
+    color: white;
+    overflow-y: auto;
+    z-index: 1050;
+    transition: .3s;
+}
+
+.brand {
+    padding: 22px 18px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+}
+
+.brand-logo {
+    width: 76px;
+    height: 76px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: white;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.brand h5 {
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.brand small {
+    color: #c5d9ce;
+    font-size: 11px;
+}
+
+.nav-section {
+    padding: 16px 18px 6px;
+    color: #a9c5b5;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.sidebar .nav-link {
+    color: #d9e7df;
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 2px 10px;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: var(--primary-light);
+    color: white;
+}
+
+.sidebar .nav-link.active {
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar .nav-link i {
+    font-size: 17px;
+    width: 20px;
+}
+
+.main {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+}
+
+.topbar {
+    background: white;
+    padding: 13px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.topbar-title {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.content {
+    padding: 25px;
+}
+
+.page-title {
+    font-weight: 800;
+    font-size: 23px;
+    margin-bottom: 5px;
+}
+
+.page-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 23px;
+}
+
+.card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(20,50,35,.035);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 15px 18px;
+    font-weight: 700;
+}
+
+.stat-card {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    height: 100%;
+}
+
+.stat-card .icon {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.stat-card h3 {
+    font-weight: 800;
+    font-size: 24px;
+    margin: 0;
+}
+
+.stat-card p {
+    color: var(--muted);
+    font-size: 12px;
+    margin: 5px 0 0;
+}
+
+.green { background: #e5f4eb; color: #16834c; }
+.gold { background: #fff4d8; color: #b98514; }
+.blue { background: #e7f1ff; color: #2873c8; }
+.red { background: #ffebeb; color: #d34444; }
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-light);
+}
+
+.btn-accent {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #18251d;
+    font-weight: 700;
+}
+
+.table {
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: #f5f8f6;
+    color: #506257;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+.table td { padding: 12px 10px; }
+
+.badge-soft {
+    background: #e6f4eb;
+    color: #167746;
+    padding: 6px 9px;
+    border-radius: 20px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+.form-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #526258;
+}
+
+.form-control, .form-select {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-color: #dfe8e2;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #5b9c79;
+    box-shadow: 0 0 0 .15rem rgba(24,60,48,.1);
+}
+
+.action-btn {
+    border: 0;
+    background: transparent;
+    padding: 4px 7px;
+    color: #526258;
+}
+
+.action-btn:hover { color: var(--primary); }
+
+.empty-state {
+    text-align: center;
+    padding: 35px 15px;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 35px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.mobile-menu { display: none; }
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 1040;
+}
+
+.overlay.show { display: block; }
+
+@media(max-width: 900px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.show { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .mobile-menu { display: inline-block; }
+    .content { padding: 17px; }
+    .topbar { padding: 12px 16px; }
+}
+
+@media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    .no-print { display: none !important; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <img src="assets/logo.png"
+             alt="Markaz Madrasa Logo"
+             class="brand-logo"
+             onerror="this.style.display='none'">
+
+        <h5>MARKAZ MADRASA</h5>
+        <small>Management Information System</small>
+    </div>
+
+    <div class="nav-section">Main Menu</div>
+
+    <a class="nav-link active" onclick="showPage('dashboard',this)">
+        <i class="bi bi-grid"></i> Dashboard
+    </a>
+
+    <a class="nav-link" onclick="showPage('students',this)">
+        <i class="bi bi-people"></i> Students
+    </a>
+
+    <a class="nav-link" onclick="showPage('classes',this)">
+        <i class="bi bi-easel"></i> Classes
+    </a>
+
+    <a class="nav-link" onclick="showPage('teachers',this)">
+        <i class="bi bi-person-workspace"></i> Teachers & Staff
+    </a>
+
+    <div class="nav-section">Finance Management</div>
+
+    <a class="nav-link" onclick="showPage('payments',this)">
+        <i class="bi bi-cash-stack"></i> Fees & Payments
+    </a>
+
+    <a class="nav-link" onclick="showPage('receipts',this)">
+        <i class="bi bi-receipt"></i> Receipts & Invoices
+    </a>
+
+    <a class="nav-link" onclick="showPage('expenses',this)">
+        <i class="bi bi-wallet2"></i> Expenses
+    </a>
+
+    <a class="nav-link" onclick="showPage('cashbook',this)">
+        <i class="bi bi-journal-text"></i> Accounts & Cashbook
+    </a>
+
+    <a class="nav-link" onclick="showPage('donations',this)">
+        <i class="bi bi-heart"></i> Donations
+    </a>
+
+    <div class="nav-section">Resources Management</div>
+
+    <a class="nav-link" onclick="showPage('assets',this)">
+        <i class="bi bi-building"></i> Assets
+    </a>
+
+    <a class="nav-link" onclick="showPage('inventory',this)">
+        <i class="bi bi-box-seam"></i> Inventory & Stores
+    </a>
+
+    <a class="nav-link" onclick="showPage('documents',this)">
+        <i class="bi bi-folder2-open"></i> Documents
+    </a>
+
+    <div class="nav-section">Administration</div>
+
+    <a class="nav-link" onclick="showPage('reports',this)">
+        <i class="bi bi-bar-chart"></i> Reports
+    </a>
+
+    <a class="nav-link" onclick="showPage('users',this)">
+        <i class="bi bi-shield-lock"></i> Users & Permissions
+    </a>
+
+    <a class="nav-link" onclick="showPage('notifications',this)">
+        <i class="bi bi-bell"></i> Notifications
+    </a>
+
+    <a class="nav-link" onclick="showPage('settings',this)">
+        <i class="bi bi-gear"></i> Settings
+    </a>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <header class="topbar">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-light mobile-menu" onclick="toggleSidebar()">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+
+            <div>
+                <div class="topbar-title" id="topTitle">Dashboard</div>
+                <small class="text-muted" id="todayDate"></small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-light position-relative"
+                    onclick="showPage('notifications')">
+                <i class="bi bi-bell"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      id="notificationCount">0</span>
+            </button>
+
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:35px;height:35px;background:#e5f4eb;color:#183c30">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="d-none d-md-block">
+                    <strong style="font-size:12px">Administrator</strong><br>
+                    <small class="text-muted">System Admin</small>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="content">
+
+        <!-- DASHBOARD -->
+        <section class="page active" id="dashboard">
+
+            <h2 class="page-title">Dashboard Overview</h2>
+            <p class="page-subtitle">Welcome to Markaz Madrasa Management Information System.</p>
+
+            <div class="row g-3 mb-3">
+
+                <div class="col-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="icon green"><i class="bi bi-people"></i></div>
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="icon blue"><i class="bi bi-person-workspace"></i></div>
+                        <h3 id="totalTeachers">0</h3>
+                        <p>Teachers & Staff</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="icon gold"><i class="bi bi-cash-stack"></i></div>
+                        <h3 id="totalCollections">KES 0</h3>
+                        <p>Total Fee Collections</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-xl-3">
+                    <div class="stat-card">
+                        <div class="icon red"><i class="bi bi-wallet2"></i></div>
+                        <h3 id="totalExpenses">KES 0</h3>
+                        <p>Total Expenses</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">Financial Overview</div>
+                        <div class="card-body">
+                            <canvas id="financeChart" height="110"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">Quick Actions</div>
+                        <div class="card-body d-grid gap-2">
+                            <button class="btn btn-primary" onclick="openForm('students')">
+                                <i class="bi bi-person-plus"></i> Register Student
+                            </button>
+                            <button class="btn btn-outline-success" onclick="openForm('payments')">
+                                <i class="bi bi-cash"></i> Record Payment
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="openForm('expenses')">
+                                <i class="bi bi-wallet"></i> Add Expense
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="openForm('teachers')">
+                                <i class="bi bi-person-plus"></i> Add Teacher / Staff
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            Recent Payments
+                            <button class="btn btn-sm btn-outline-success"
+                                    onclick="showPage('payments')">View All</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt No.</th>
+                                        <th>Student</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentPayments"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- STUDENTS -->
+        <section class="page" id="students">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Student Management</h2>
+                    <p class="page-subtitle">Register and manage madrasa students.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('students')">
+                    <i class="bi bi-plus-lg"></i> Register Student
+                </button>
+            </div>
+            <div id="studentsTable"></div>
+        </section>
+
+
+        <!-- CLASSES -->
+        <section class="page" id="classes">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Class Management</h2>
+                    <p class="page-subtitle">Manage classes and learning groups.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('classes')">
+                    <i class="bi bi-plus-lg"></i> Add Class
+                </button>
+            </div>
+            <div id="classesTable"></div>
+        </section>
+
+
+        <!-- TEACHERS -->
+        <section class="page" id="teachers">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Teachers & Staff</h2>
+                    <p class="page-subtitle">Manage staff information and responsibilities.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('teachers')">
+                    <i class="bi bi-plus-lg"></i> Add Staff
+                </button>
+            </div>
+            <div id="teachersTable"></div>
+        </section>
+
+
+        <!-- PAYMENTS -->
+        <section class="page" id="payments">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Fees & Payments</h2>
+                    <p class="page-subtitle">Record student payments and generate receipts.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('payments')">
+                    <i class="bi bi-plus-lg"></i> Record Payment
+                </button>
+            </div>
+            <div id="paymentsTable"></div>
+        </section>
+
+
+        <!-- RECEIPTS -->
+        <section class="page" id="receipts">
+            <h2 class="page-title">Receipts & Invoices</h2>
+            <p class="page-subtitle">View, print and manage payment receipts.</p>
+            <div id="receiptsTable"></div>
+        </section>
+
+
+        <!-- EXPENSES -->
+        <section class="page" id="expenses">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Expense Management</h2>
+                    <p class="page-subtitle">Track organizational expenditure.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('expenses')">
+                    <i class="bi bi-plus-lg"></i> Add Expense
+                </button>
+            </div>
+            <div id="expensesTable"></div>
+        </section>
+
+
+        <!-- CASHBOOK -->
+        <section class="page" id="cashbook">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Accounts & Cashbook</h2>
+                    <p class="page-subtitle">Monitor money received and money spent.</p>
+                </div>
+                <button class="btn btn-outline-success" onclick="exportCSV('cashbook')">
+                    <i class="bi bi-download"></i> Export CSV
+                </button>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <p>Total Income</p>
+                        <h3 id="cashIncome">KES 0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <p>Total Expenditure</p>
+                        <h3 id="cashExpense">KES 0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <p>Current Balance</p>
+                        <h3 id="cashBalance">KES 0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cashbookTable"></div>
+        </section>
+
+
+        <!-- DONATIONS -->
+        <section class="page" id="donations">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Donations & Contributions</h2>
+                    <p class="page-subtitle">Record donations from individuals and organizations.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('donations')">
+                    <i class="bi bi-plus-lg"></i> Add Donation
+                </button>
+            </div>
+            <div id="donationsTable"></div>
+        </section>
+
+
+        <!-- ASSETS -->
+        <section class="page" id="assets">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Asset Management</h2>
+                    <p class="page-subtitle">Track buildings, furniture, equipment and other assets.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('assets')">
+                    <i class="bi bi-plus-lg"></i> Add Asset
+                </button>
+            </div>
+            <div id="assetsTable"></div>
+        </section>
+
+
+        <!-- INVENTORY -->
+        <section class="page" id="inventory">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Inventory & Stores</h2>
+                    <p class="page-subtitle">Manage supplies, stock levels and store items.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('inventory')">
+                    <i class="bi bi-plus-lg"></i> Add Item
+                </button>
+            </div>
+            <div id="inventoryTable"></div>
+        </section>
+
+
+        <!-- DOCUMENTS -->
+        <section class="page" id="documents">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h2 class="page-title">Document Register</h2>
+                    <p class="page-subtitle">Keep a record of organizational documents.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openForm('documents')">
+                    <i class="bi bi-plus-lg"></i> Add Document
+                </button>
+            </div>
+            <div id="documentsTable"></div>
+        </section>
+
+
+        <!-- REPORTS -->
+        <section class="page" id="reports">
+            <h2 class="page-title">Reports & Analytics</h2>
+            <p class="page-subtitle">Review and export madrasa management records.</p>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Student Report</div>
+                        <div class="card-body">
+                            <p>Export all registered student records.</p>
+                            <button class="btn btn-outline-success"
+                                    onclick="exportCSV('students')">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Export Students
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Payment Report</div>
+                        <div class="card-body">
+                            <p>Export all recorded fee payments.</p>
+                            <button class="btn btn-outline-success"
+                                    onclick="exportCSV('payments')">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Export Payments
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Expense Report</div>
+                        <div class="card-body">
+                            <p>Export all recorded organizational expenses.</p>
+                            <button class="btn btn-outline-success"
+                                    onclick="exportCSV('expenses')">
+                                <i class="bi bi-file-earmark-spreadsheet"></i> Export Expenses
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Complete Backup</div>
+                        <div class="card-body">
+                            <p>Download a backup of all system records.</p>
+                            <button class="btn btn-primary" onclick="backupData()">
+                                <i class="bi bi-download"></i> Download Backup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- USERS -->
+        <section class="page" id="users">
+            <h2 class="page-title">Users & Permissions</h2>
+            <p class="page-subtitle">Manage system user accounts and access roles.</p>
+
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                This frontend demo does not provide secure authentication.
+                User access control must be implemented in the backend.
+            </div>
+
+            <div id="usersTable"></div>
+
+            <button class="btn btn-primary" onclick="openForm('users')">
+                <i class="bi bi-person-plus"></i> Add User
+            </button>
+        </section>
+
+
+        <!-- NOTIFICATIONS -->
+        <section class="page" id="notifications">
+            <h2 class="page-title">Notifications & Alerts</h2>
+            <p class="page-subtitle">System reminders and stock alerts.</p>
+            <div id="notificationsList"></div>
+        </section>
+
+
+        <!-- SETTINGS -->
+        <section class="page" id="settings">
+            <h2 class="page-title">System Settings</h2>
+            <p class="page-subtitle">Configure the madrasa information and system data.</p>
+
+            <div class="card">
+                <div class="card-header">Organization Information</div>
+                <div class="card-body">
+                    <form id="settingsForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Organization Name</label>
+                                <input class="form-control" id="orgName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input class="form-control" id="orgPhone">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input class="form-control" id="orgEmail">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <input class="form-control" id="orgLocation">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-3">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Database Backup & Restore</div>
+                <div class="card-body">
+                    <p class="text-muted small">
+                        Download your records or restore a previously downloaded JSON backup.
+                    </p>
+                    <button class="btn btn-success" onclick="backupData()">
+                        <i class="bi bi-download"></i> Backup Data
+                    </button>
+
+                    <label class="btn btn-outline-primary mb-0">
+                        <i class="bi bi-upload"></i> Restore Backup
+                        <input type="file" accept=".json" hidden onchange="restoreData(event)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="card border-danger">
+                <div class="card-header text-danger">Danger Zone</div>
+                <div class="card-body">
+                    <p class="small text-muted">
+                        This action permanently clears the records stored in this browser.
+                    </p>
+                    <button class="btn btn-danger" onclick="clearAllData()">
+                        <i class="bi bi-trash"></i> Clear All System Data
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+
+<!-- GENERAL FORM MODAL -->
+<div class="modal fade" id="formModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="formTitle">Add Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form id="recordForm">
+                <div class="modal-body">
+                    <div class="row g-3" id="formFields"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Save Record
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- RECEIPT MODAL -->
+<div class="modal fade" id="receiptModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" id="printArea"></div>
+            <div class="modal-footer no-print">
+                <button class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" onclick="printReceipt()">
+                    <i class="bi bi-printer"></i> Print Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+/* =========================================
+   DATABASE AND CONFIGURATION
+========================================= */
+
+const DB_KEY = "MARKAZ_MADRASA_DATABASE_V1";
+
+const defaultDB = {
+    students: [],
+    classes: [],
+    teachers: [],
+    payments: [],
+    expenses: [],
+    donations: [],
+    assets: [],
+    inventory: [],
+    documents: [],
+    users: [],
+    settings: {
+        name: "MARKAZ MADRASA",
+        phone: "",
+        email: "",
+        location: ""
+    }
+};
+
+let db = loadDatabase();
+let currentModule = "";
+let editingId = null;
+let financeChart = null;
+
+function loadDatabase() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(DB_KEY));
+        if (!saved) return structuredClone(defaultDB);
+
+        return {
+            ...structuredClone(defaultDB),
+            ...saved,
+            settings: {
+                ...defaultDB.settings,
+                ...(saved.settings || {})
+            }
+        };
+    } catch (error) {
+        return structuredClone(defaultDB);
+    }
+}
+
+function saveDatabase() {
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+    refreshAll();
+}
+
+function makeId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function money(value) {
+    return "KES " + Number(value || 0).toLocaleString("en-KE");
+}
+
+function today() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+function getModuleTitle(module) {
+    const titles = {
+        students: "Students",
+        classes: "Classes",
+        teachers: "Teachers & Staff",
+        payments: "Fees & Payments",
+        expenses: "Expenses",
+        donations: "Donations",
+        assets: "Assets",
+        inventory: "Inventory",
+        documents: "Documents",
+        users: "Users"
+    };
+    return titles[module] || module;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function showPage(page, element) {
+    document.querySelectorAll(".page").forEach(item => item.classList.remove("active"));
+
+    const target = document.getElementById(page);
+    if (!target) return;
+
+    target.classList.add("active");
+
+    document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+        link.classList.remove("active");
+    });
+
+    if (element) {
+        element.classList.add("active");
+    } else {
+        document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+            if (link.getAttribute("onclick")?.includes("'" + page + "'")) {
+                link.classList.add("active");
+            }
+        });
+    }
+
+    const titles = {
+        dashboard: "Dashboard",
+        students: "Student Management",
+        classes: "Class Management",
+        teachers: "Teachers & Staff",
+        payments: "Fees & Payments",
+        receipts: "Receipts & Invoices",
+        expenses: "Expense Management",
+        cashbook: "Accounts & Cashbook",
+        donations: "Donations",
+        assets: "Asset Management",
+        inventory: "Inventory & Stores",
+        documents: "Document Register",
+        reports: "Reports & Analytics",
+        users: "Users & Permissions",
+        notifications: "Notifications",
+        settings: "System Settings"
+    };
+
+    document.getElementById("topTitle").textContent = titles[page] || page;
+
+    if (window.innerWidth <= 900) {
+        document.getElementById("sidebar").classList.remove("show");
+        document.getElementById("overlay").classList.remove("show");
+    }
+
+    renderPage(page);
+}
+
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("show");
+    document.getElementById("overlay").classList.toggle("show");
+}
+
+
+/* =========================================
+   FORM DEFINITIONS
+========================================= */
+
+const fields = {
+    students: [
+        ["admissionNo", "Admission Number", "text", true],
+        ["name", "Student Full Name", "text", true],
+        ["gender", "Gender", "select", true, ["Male", "Female"]],
+        ["dob", "Date of Birth", "date"],
+        ["className", "Class", "select", false, "classes"],
+        ["guardian", "Parent / Guardian Name", "text"],
+        ["phone", "Guardian Phone Number", "tel"],
+        ["address", "Home Address", "text"],
+        ["admissionDate", "Admission Date", "date"],
+        ["status", "Student Status", "select", true, ["Active", "Inactive"]]
+    ],
+
+    classes: [
+        ["name", "Class Name", "text", true],
+        ["teacher", "Class Teacher", "text"],
+        ["level", "Level / Category", "text"],
+        ["capacity", "Maximum Capacity", "number"],
+        ["room", "Classroom", "text"],
+        ["description", "Description", "textarea"]
+    ],
+
+    teachers: [
+        ["staffNo", "Staff Number", "text", true],
+        ["name", "Full Name", "text", true],
+        ["gender", "Gender", "select", false, ["Male", "Female"]],
+        ["phone", "Phone Number", "tel"],
+        ["email", "Email Address", "email"],
+        ["role", "Position / Role", "text"],
+        ["dateJoined", "Date Joined", "date"],
+        ["status", "Employment Status", "select", false, ["Active", "Inactive"]]
+    ],
+
+    payments: [
+        ["student", "Student Name", "select", true, "students"],
+        ["term", "Term / Period", "text", true],
+        ["amount", "Amount Paid (KES)", "number", true],
+        ["method", "Payment Method", "select", true, ["Cash", "M-Pesa", "Bank", "Cheque", "Other"]],
+        ["transaction", "M-Pesa / Bank Transaction Reference", "text"],
+        ["date", "Payment Date", "date", true],
+        ["receivedBy", "Received By", "text"],
+        ["notes", "Payment Description", "textarea"]
+    ],
+
+    expenses: [
+        ["category", "Expense Category", "select", true, ["Food", "Salaries", "Transport", "Utilities", "Repairs", "Learning Materials", "Rent", "Other"]],
+        ["description", "Description", "text", true],
+        ["amount", "Amount (KES)", "number", true],
+        ["method", "Payment Method", "select", false, ["Cash", "M-Pesa", "Bank", "Cheque", "Other"]],
+        ["reference", "Transaction Reference", "text"],
+        ["date", "Expense Date", "date", true],
+        ["approvedBy", "Approved By", "text"]
+    ],
+
+    donations: [
+        ["donor", "Donor Name", "text", true],
+        ["phone", "Donor Phone", "tel"],
+        ["type", "Donation Type", "select", false, ["Cash", "Food", "Books", "Equipment", "Other"]],
+        ["amount", "Estimated Value (KES)", "number"],
+        ["description", "Donation Description", "textarea"],
+        ["date", "Date Received", "date", true]
+    ],
+
+    assets: [
+        ["name", "Asset Name", "text", true],
+        ["category", "Category", "select", false, ["Furniture", "Building", "Electronics", "Vehicle", "Equipment", "Other"]],
+        ["assetCode", "Asset Code", "text"],
+        ["quantity", "Quantity", "number"],
+        ["value", "Estimated Value (KES)", "number"],
+        ["location", "Current Location", "text"],
+        ["condition", "Condition", "select", false, ["New", "Good", "Fair", "Damaged"]],
+        ["date", "Acquisition Date", "date"]
+    ],
+
+    inventory: [
+        ["name", "Item Name", "text", true],
+        ["category", "Category", "text"],
+        ["quantity", "Quantity in Stock", "number", true],
+        ["minimum", "Minimum Stock Level", "number"],
+        ["unit", "Unit of Measure", "text"],
+        ["supplier", "Supplier", "text"],
+        ["date", "Date Added", "date"]
+    ],
+
+    documents: [
+        ["title", "Document Title", "text", true],
+        ["category", "Document Category", "select", false, ["Registration", "Financial", "Legal", "Academic", "Staff", "Other"]],
+        ["reference", "Reference Number", "text"],
+        ["date", "Document Date", "date"],
+        ["description", "Description", "textarea"],
+        ["location", "Physical File Location", "text"]
+    ],
+
+    users: [
+        ["name", "User Full Name", "text", true],
+        ["username", "Username", "text", true],
+        ["role", "User Role", "select", true, ["Administrator", "Accountant", "Secretary", "Teacher", "Storekeeper", "Viewer"]],
+        ["phone", "Phone Number", "tel"],
+        ["status", "Account Status", "select", false, ["Active", "Inactive"]]
+    ]
+};
+
+
+/* =========================================
+   FORM GENERATION AND SAVING
+========================================= */
+
+function openForm(module, id = null) {
+    currentModule = module;
+    editingId = id;
+
+    const definition = fields[module];
+    if (!definition) return;
+
+    const record = id
+        ? db[module].find(item => item.id === id)
+        : {};
+
+    document.getElementById("formTitle").textContent =
+        (id ? "Edit " : "Add ") + getModuleTitle(module) + " Record";
+
+    const container = document.getElementById("formFields");
+    container.innerHTML = "";
+
+    definition.forEach(field => {
+        const [key, label, type, required, options] = field;
+        const value = record?.[key] ?? "";
+
+        let input = "";
+
+        if (type === "select") {
+            let choices = [];
+
+            if (options === "classes") {
+                choices = db.classes.map(item => item.name);
+            } else if (options === "students") {
+                choices = db.students.map(item => item.name);
+            } else {
+                choices = options || [];
+            }
+
+            input = `
+                <select class="form-select" id="field_${key}" ${required ? "required" : ""}>
+                    <option value="">Select ${escapeHTML(label)}</option>
+                    ${choices.map(choice => `
+                        <option value="${escapeHTML(choice)}"
+                            ${value === choice ? "selected" : ""}>
+                            ${escapeHTML(choice)}
+                        </option>
+                    `).join("")}
+                </select>
+            `;
+        } else if (type === "textarea") {
+            input = `
+                <textarea class="form-control" id="field_${key}" rows="3"
+                    ${required ? "required" : ""}>${escapeHTML(value)}</textarea>
+            `;
+        } else {
+            input = `
+                <input class="form-control"
+                    type="${type}"
+                    id="field_${key}"
+                    value="${escapeHTML(value)}"
+                    ${required ? "required" : ""}
+                    ${type === "number" ? 'min="0"' : ''}>
+            `;
+        }
+
+        container.innerHTML += `
+            <div class="col-md-6">
+                <label class="form-label">${escapeHTML(label)}</label>
+                ${input}
+            </div>
+        `;
+    });
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("formModal")).show();
+}
+
+
+document.getElementById("recordForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const definition = fields[currentModule];
+    const record = {};
+
+    definition.forEach(field => {
+        const key = field[0];
+        const element = document.getElementById("field_" + key);
+        record[key] = element ? element.value.trim() : "";
+    });
+
+    if (currentModule === "payments" && Number(record.amount) <= 0) {
+        alert("Please enter a valid payment amount.");
+        return;
+    }
+
+    if (currentModule === "expenses" && Number(record.amount) <= 0) {
+        alert("Please enter a valid expense amount.");
+        return;
+    }
+
+    if (editingId) {
+        const index = db[currentModule].findIndex(item => item.id === editingId);
+        if (index >= 0) {
+            db[currentModule][index] = {
+                ...db[currentModule][index],
+                ...record
+            };
+        }
+    } else {
+        record.id = makeId();
+        record.createdAt = new Date().toISOString();
+
+        if (currentModule === "payments") {
+            record.receiptNo = generateReceiptNumber();
+        }
+
+        db[currentModule].push(record);
+    }
+
+    saveDatabase();
+
+    bootstrap.Modal.getInstance(document.getElementById("formModal")).hide();
+
+    if (currentModule === "payments" && !editingId) {
+        const payment = db.payments[db.payments.length - 1];
+        viewReceipt(payment.id);
+    }
+
+    editingId = null;
+});
+
+
+/* =========================================
+   RECEIPTS
+========================================= */
+
+function generateReceiptNumber() {
+    const year = new Date().getFullYear();
+    const number = String(db.payments.length + 1).padStart(4, "0");
+    return `MM-${year}-${number}`;
+}
+
+function viewReceipt(id) {
+    const payment = db.payments.find(item => item.id === id);
+    if (!payment) return;
+
+    const settings = db.settings;
+
+    document.getElementById("printArea").innerHTML = `
+        <div style="text-align:center;padding:15px 5px;">
+            <img src="assets/logo.png"
+                 style="width:75px;height:75px;object-fit:contain;"
+                 onerror="this.style.display='none'">
+
+            <h3 style="font-weight:800;margin-top:10px;">
+                ${escapeHTML(settings.name || "MARKAZ MADRASA")}
+            </h3>
+
+            <p style="margin-bottom:5px;font-size:12px;">
+                ${escapeHTML(settings.location || "")}
+            </p>
+
+            <p style="font-size:12px;">
+                ${escapeHTML(settings.phone || "")}
+            </p>
+
+            <hr>
+
+            <h4 style="font-weight:800;">OFFICIAL PAYMENT RECEIPT</h4>
+
+            <div style="text-align:left;margin-top:25px;font-size:14px;">
+                <p><strong>Receipt Number:</strong> ${escapeHTML(payment.receiptNo || "-")}</p>
+                <p><strong>Date:</strong> ${escapeHTML(payment.date || "-")}</p>
+                <p><strong>Student Name:</strong> ${escapeHTML(payment.student || "-")}</p>
+                <p><strong>Term / Period:</strong> ${escapeHTML(payment.term || "-")}</p>
+                <p><strong>Payment Method:</strong> ${escapeHTML(payment.method || "-")}</p>
+                <p><strong>Transaction Reference:</strong> ${escapeHTML(payment.transaction || "-")}</p>
+
+                <hr>
+
+                <h4 style="text-align:right;">
+                    AMOUNT PAID: ${money(payment.amount)}
+                </h4>
+
+                <p><strong>Received By:</strong> ${escapeHTML(payment.receivedBy || "-")}</p>
+                <p><strong>Description:</strong> ${escapeHTML(payment.notes || "School fees payment")}</p>
+            </div>
+
+            <hr>
+
+            <p style="font-size:12px;margin-top:25px;">
+                Thank you for your payment.
+            </p>
+
+            <p style="font-size:11px;color:#777;">
+                Computer-generated receipt.
+            </p>
+        </div>
+    `;
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("receiptModal")).show();
+}
+
+function printReceipt() {
+    const receipt = document.getElementById("printArea").innerHTML;
+
+    const win = window.open("", "_blank", "width=700,height=800");
+
+    if (!win) {
+        alert("Please allow pop-ups to print the receipt.");
+        return;
+    }
+
+    win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Markaz Madrasa Receipt</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    max-width: 650px;
+                    margin: 25px auto;
+                    padding: 20px;
+                }
+                hr { border: 0; border-top: 1px solid #ccc; }
+                @media print {
+                    body { margin: 0; }
+                }
+            </style>
+        </head>
+        <body>
+            ${receipt}
+            <script>
+                window.onload = function() {
+                    window.print();
+                };
+            <\/script>
+        </body>
+        </html>
+    `);
+
+    win.document.close();
+}
+
+
+/* =========================================
+   TABLE GENERATION
+========================================= */
+
+const tableConfig = {
+    students: {
+        title: "Registered Students",
+        columns: [
+            ["admissionNo", "Admission No."],
+            ["name", "Student Name"],
+            ["gender", "Gender"],
+            ["className", "Class"],
+            ["guardian", "Guardian"],
+            ["phone", "Phone"],
+            ["status", "Status"]
+        ]
+    },
+
+    classes: {
+        title: "Registered Classes",
+        columns: [
+            ["name", "Class Name"],
+            ["teacher", "Class Teacher"],
+            ["level", "Level"],
+            ["capacity", "Capacity"],
+            ["room", "Room"]
+        ]
+    },
+
+    teachers: {
+        title: "Teachers & Staff Records",
+        columns: [
+            ["staffNo", "Staff No."],
+            ["name", "Full Name"],
+            ["phone", "Phone"],
+            ["email", "Email"],
+            ["role", "Position"],
+            ["status", "Status"]
+        ]
+    },
+
+    payments: {
+        title: "Payment Records",
+        columns: [
+            ["receiptNo", "Receipt No."],
+            ["student", "Student"],
+            ["term", "Term"],
+            ["amount", "Amount"],
+            ["method", "Method"],
+            ["date", "Date"]
+        ]
+    },
+
+    expenses: {
+        title: "Expense Records",
+        columns: [
+            ["category", "Category"],
+            ["description", "Description"],
+            ["amount", "Amount"],
+            ["method", "Method"],
+            ["date", "Date"],
+            ["approvedBy", "Approved By"]
+        ]
+    },
+
+    donations: {
+        title: "Donation Records",
+        columns: [
+            ["donor", "Donor"],
+            ["phone", "Phone"],
+            ["type", "Type"],
+            ["amount", "Value"],
+            ["description", "Description"],
+            ["date", "Date"]
+        ]
+    },
+
+    assets: {
+        title: "Asset Register",
+        columns: [
+            ["name", "Asset"],
+            ["category", "Category"],
+            ["assetCode", "Asset Code"],
+            ["quantity", "Quantity"],
+            ["value", "Value"],
+            ["location", "Location"],
+            ["condition", "Condition"]
+        ]
+    },
+
+    inventory: {
+        title: "Inventory Records",
+        columns: [
+            ["name", "Item"],
+            ["category", "Category"],
+            ["quantity", "Stock"],
+            ["minimum", "Minimum Stock"],
+            ["unit", "Unit"],
+            ["supplier", "Supplier"]
+        ]
+    },
+
+    documents: {
+        title: "Document Register",
+        columns: [
+            ["title", "Document"],
+            ["category", "Category"],
+            ["reference", "Reference"],
+            ["date", "Date"],
+            ["description", "Description"],
+            ["location", "File Location"]
+        ]
+    },
+
+    users: {
+        title: "System Users",
+        columns: [
+            ["name", "Full Name"],
+            ["username", "Username"],
+            ["role", "Role"],
+            ["phone", "Phone"],
+            ["status", "Status"]
+        ]
+    }
+};
+
+
+function renderTable(module) {
+    const config = tableConfig[module];
+    if (!config) return "";
+
+    const records = db[module] || [];
+
+    const headers = config.columns.map(column =>
+        `<th>${escapeHTML(column[1])}</th>`
+    ).join("");
+
+    const rows = records.map(record => {
+        const cells = config.columns.map(column => {
+            const key = column[0];
+            let value = record[key] ?? "-";
+
+            if (key === "amount" || key === "value") {
+                value = money(value);
+            }
+
+            if (key === "status") {
+                value = `<span class="badge-soft">${escapeHTML(value)}</span>`;
+            } else {
+                value = escapeHTML(value);
+            }
+
+            return `<td>${value}</td>`;
+        }).join("");
+
+        const receiptButton = module === "payments"
+            ? `<button class="action-btn" title="View Receipt"
+                    onclick="viewReceipt('${record.id}')">
+                    <i class="bi bi-receipt"></i>
+               </button>`
+            : "";
+
+        return `
+            <tr>
+                ${cells}
+                <td class="text-nowrap">
+                    ${receiptButton}
+                    <button class="action-btn" title="Edit"
+                            onclick="openForm('${module}','${record.id}')">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="action-btn text-danger" title="Delete"
+                            onclick="deleteRecord('${module}','${record.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join("");
+
+    return `
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <span>${escapeHTML(config.title)} (${records.length})</span>
+                <div class="d-flex gap-2">
+                    <input class="form-control form-control-sm"
+                           style="max-width:180px"
+                           placeholder="Search records..."
+                           oninput="searchTable(this)">
+                    <button class="btn btn-sm btn-outline-success"
+                            onclick="exportCSV('${module}')">
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>${headers}<th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        ${rows || `
+                            <tr>
+                                <td colspan="${config.columns.length + 1}">
+                                    <div class="empty-state">
+                                        <i class="bi bi-inbox"></i>
+                                        No records available.
+                                    </div>
+                                </td>
+                            </tr>
+                        `}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+
+function searchTable(input) {
+    const query = input.value.toLowerCase();
+    const table = input.closest(".card").querySelector("tbody");
+
+    table.querySelectorAll("tr").forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(query)
+            ? ""
+            : "none";
+    });
+}
+
+
+function deleteRecord(module, id) {
+    if (!confirm("Are you sure you want to delete this record?")) return;
+
+    db[module] = db[module].filter(record => record.id !== id);
+    saveDatabase();
+}
+
+
+/* =========================================
+   CASHBOOK AND RECEIPTS
+========================================= */
+
+function renderReceipts() {
+    const container = document.getElementById("receiptsTable");
+
+    const rows = db.payments.map(payment => `
+        <tr>
+            <td>${escapeHTML(payment.receiptNo || "-")}</td>
+            <td>${escapeHTML(payment.student)}</td>
+            <td>${escapeHTML(payment.date)}</td>
+            <td>${money(payment.amount)}</td>
+            <td>${escapeHTML(payment.method)}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-success"
+                        onclick="viewReceipt('${payment.id}')">
+                    <i class="bi bi-printer"></i> View Receipt
+                </button>
+            </td>
+        </tr>
+    `).join("");
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Receipt No.</th>
+                            <th>Student</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows || `
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">No receipts generated yet.</div>
+                                </td>
+                            </tr>
+                        `}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+
+function renderCashbook() {
+    const income = db.payments.reduce((sum, item) => sum + Number(item.amount || 0), 0)
+        + db.donations.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+    const expense = db.expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+    document.getElementById("cashIncome").textContent = money(income);
+    document.getElementById("cashExpense").textContent = money(expense);
+    document.getElementById("cashBalance").textContent = money(income - expense);
+
+    const transactions = [
+        ...db.payments.map(item => ({
+            date: item.date,
+            type: "Student Fee",
+            description: item.student,
+            income: Number(item.amount || 0),
+            expense: 0
+        })),
+
+        ...db.donations.map(item => ({
+            date: item.date,
+            type: "Donation",
+            description: item.donor,
+            income: Number(item.amount || 0),
+            expense: 0
+        })),
+
+        ...db.expenses.map(item => ({
+            date: item.date,
+            type: "Expense",
+            description: item.description,
+            income: 0,
+            expense: Number(item.amount || 0)
+        }))
+    ].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    document.getElementById("cashbookTable").innerHTML = `
+        <div class="card">
+            <div class="card-header">Financial Transactions</div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Transaction</th>
+                            <th>Description</th>
+                            <th>Money In</th>
+                            <th>Money Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${transactions.map(item => `
+                            <tr>
+                                <td>${escapeHTML(item.date || "-")}</td>
+                                <td>${escapeHTML(item.type)}</td>
+                                <td>${escapeHTML(item.description)}</td>
+                                <td class="text-success">${item.income ? money(item.income) : "-"}</td>
+                                <td class="text-danger">${item.expense ? money(item.expense) : "-"}</td>
+                            </tr>
+                        `).join("") || `
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">No financial transactions available.</div>
+                                </td>
+                            </tr>
+                        `}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+function renderDashboard() {
+    const totalStudents = db.students.length;
+    const totalTeachers = db.teachers.length;
+
+    const collections = db.payments.reduce(
+        (sum, item) => sum + Number(item.amount || 0), 0
+    );
+
+    const expenses = db.expenses.reduce(
+        (sum, item) => sum + Number(item.amount || 0), 0
+    );
+
+    document.getElementById("totalStudents").textContent = totalStudents;
+    document.getElementById("totalTeachers").textContent = totalTeachers;
+    document.getElementById("totalCollections").textContent = money(collections);
+    document.getElementById("totalExpenses").textContent = money(expenses);
+
+    const recent = [...db.payments].reverse().slice(0, 5);
+
+    document.getElementById("recentPayments").innerHTML =
+        recent.map(payment => `
+            <tr>
+                <td>${escapeHTML(payment.receiptNo || "-")}</td>
+                <td>${escapeHTML(payment.student)}</td>
+                <td>${money(payment.amount)}</td>
+                <td>${escapeHTML(payment.method)}</td>
+                <td>${escapeHTML(payment.date)}</td>
+            </tr>
+        `).join("") || `
+            <tr>
+                <td colspan="5">
+                    <div class="empty-state">No payment records available.</div>
+                </td>
+            </tr>
+        `;
+
+    const chartElement = document.getElementById("financeChart");
+
+    if (financeChart) financeChart.destroy();
+
+    financeChart = new Chart(chartElement, {
+        type: "bar",
+        data: {
+            labels: ["Collections", "Expenses"],
+            datasets: [{
+                label: "Amount in KES",
+                data: [collections, expenses],
+                backgroundColor: ["#238451", "#d5a83b"],
+                borderRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+function renderNotifications() {
+    const lowStock = db.inventory.filter(item =>
+        Number(item.quantity || 0) <= Number(item.minimum || 0)
+    );
+
+    const notifications = [];
+
+    lowStock.forEach(item => {
+        notifications.push({
+            title: "Low Stock Alert",
+            message: `${item.name} is running low. Available quantity: ${item.quantity}.`,
+            icon: "bi-exclamation-triangle text-danger"
+        });
+    });
+
+    if (!db.students.length) {
+        notifications.push({
+            title: "Student Records",
+            message: "No students have been registered yet.",
+            icon: "bi-info-circle text-primary"
+        });
+    }
+
+    if (!notifications.length) {
+        notifications.push({
+            title: "All Good",
+            message: "There are no outstanding system alerts.",
+            icon: "bi-check-circle text-success"
+        });
+    }
+
+    document.getElementById("notificationCount").textContent = lowStock.length;
+
+    document.getElementById("notificationsList").innerHTML =
+        notifications.map(item => `
+            <div class="card">
+                <div class="card-body d-flex gap-3 align-items-center">
+                    <i class="bi ${item.icon} fs-3"></i>
+                    <div>
+                        <strong>${escapeHTML(item.title)}</strong>
+                        <p class="mb-0 small text-muted">${escapeHTML(item.message)}</p>
+                    </div>
+                </div>
+            </div>
+        `).join("");
+}
+
+
+/* =========================================
+   PAGE RENDERING
+========================================= */
+
+function renderPage(page) {
+    if (tableConfig[page]) {
+        const target = document.getElementById(page + "Table");
+        if (target) target.innerHTML = renderTable(page);
+    }
+
+    if (page === "dashboard") renderDashboard();
+    if (page === "receipts") renderReceipts();
+    if (page === "cashbook") renderCashbook();
+    if (page === "notifications") renderNotifications();
+    if (page === "settings") loadSettings();
+}
+
+
+function refreshAll() {
+    renderDashboard();
+    renderReceipts();
+    renderCashbook();
+    renderNotifications();
+
+    Object.keys(tableConfig).forEach(module => {
+        const target = document.getElementById(module + "Table");
+        if (target) target.innerHTML = renderTable(module);
+    });
+}
+
+
+/* =========================================
+   EXPORT CSV
+========================================= */
+
+function exportCSV(module) {
+    const records = module === "cashbook"
+        ? getCashbookExport()
+        : db[module];
+
+    if (!records || !records.length) {
+        alert("There are no records to export.");
+        return;
+    }
+
+    const headers = [...new Set(records.flatMap(record => Object.keys(record)))];
+
+    const csv = [
+        headers.join(","),
+        ...records.map(record => headers.map(header =>
+            '"' + String(record[header] ?? "").replace(/"/g, '""') + '"'
+        ).join(","))
+    ].join("\n");
+
+    downloadFile(
+        csv,
+        `markaz-${module}-${today()}.csv`,
+        "text/csv;charset=utf-8;"
+    );
+}
+
+
+function getCashbookExport() {
+    return [
+        ...db.payments.map(item => ({
+            date: item.date,
+            type: "Student Fee",
+            description: item.student,
+            moneyIn: item.amount,
+            moneyOut: 0
+        })),
+
+        ...db.donations.map(item => ({
+            date: item.date,
+            type: "Donation",
+            description: item.donor,
+            moneyIn: item.amount,
+            moneyOut: 0
+        })),
+
+        ...db.expenses.map(item => ({
+            date: item.date,
+            type: "Expense",
+            description: item.description,
+            moneyIn: 0,
+            moneyOut: item.amount
+        }))
+    ];
+}
+
+
+function downloadFile(content, filename, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+/* =========================================
+   BACKUP AND RESTORE
+========================================= */
+
+function backupData() {
+    const content = JSON.stringify(db, null, 2);
+
+    downloadFile(
+        content,
+        `markaz-madrasa-backup-${today()}.json`,
+        "application/json"
+    );
+}
+
+
+function restoreData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+
+            if (!imported || typeof imported !== "object") {
+                throw new Error("Invalid backup file");
+            }
+
+            if (!confirm("Restore this backup? Current browser data will be replaced.")) {
+                return;
+            }
+
+            db = {
+                ...structuredClone(defaultDB),
+                ...imported,
+                settings: {
+                    ...defaultDB.settings,
+                    ...(imported.settings || {})
+                }
+            };
+
+            saveDatabase();
+            alert("Backup restored successfully.");
+            showPage("dashboard");
+
+        } catch (error) {
+            alert("Invalid backup file. Please select a valid Markaz backup.");
+        }
+    };
+
+    reader.readAsText(file);
+    event.target.value = "";
+}
+
+
+function clearAllData() {
+    const confirmation = prompt(
+        'This will permanently delete all records in this browser. Type DELETE to continue:'
+    );
+
+    if (confirmation !== "DELETE") return;
+
+    db = structuredClone(defaultDB);
+    saveDatabase();
+
+    alert("All browser records have been cleared.");
+    showPage("dashboard");
+}
+
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+function loadSettings() {
+    document.getElementById("orgName").value = db.settings.name || "";
+    document.getElementById("orgPhone").value = db.settings.phone || "";
+    document.getElementById("orgEmail").value = db.settings.email || "";
+    document.getElementById("orgLocation").value = db.settings.location || "";
+}
+
+
+document.getElementById("settingsForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    db.settings = {
+        name: document.getElementById("orgName").value.trim(),
+        phone: document.getElementById("orgPhone").value.trim(),
+        email: document.getElementById("orgEmail").value.trim(),
+        location: document.getElementById("orgLocation").value.trim()
+    };
+
+    saveDatabase();
+    alert("Organization settings saved successfully.");
+});
+
+
+/* =========================================
+   INITIALIZATION
+========================================= */
+
+document.getElementById("todayDate").textContent =
+    new Date().toLocaleDateString("en-KE", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+
+refreshAll();
+loadSettings();
+
+</script>
+
+</body>
+</html>
